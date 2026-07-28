@@ -1,0 +1,1 @@
+{:paths ["src"], :deps #:io.github.kotoba-lang{kotoba-core-contracts #:git{:url "https://github.com/kotoba-lang/kotoba-core-contracts.git", :sha "b8367003de0bfade34865a31ef8fe4633af4a0a1"}}, :aliases {:test {:extra-paths ["test"], :extra-deps #:io.github.cognitect-labs{test-runner #:git{:tag "v0.5.1", :sha "dfb30dd"}}, :main-opts ["-m" "cognitect.test-runner"]}}}
