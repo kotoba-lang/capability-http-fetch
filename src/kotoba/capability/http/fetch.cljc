@@ -1,6 +1,5 @@
 (ns kotoba.capability.http.fetch
-  "Importable contract for http/fetch."
-  (:require [kotoba.core.capability-repository :as repository]))
+  "Importable contract for http/fetch.")
 
 (def manifest
-  (repository/repository-manifest "http/fetch"))
+  {:schema "kotoba.capability.repository.v1", :capability/version 1, :capability/dependencies #{}, :capability/imports #{:http-fetch}, :authority "kotoba-lang/kotoba-core-contracts", :capability/default-policy :autonomous, :capability/artifact {:format :wasm-component, :digest-required? true, :signature-required? true}, :capability/radicle-rid "rad:z2GoJStxV5pz3hEHYorXA3fW9ZJgG", :capability/repository "kotoba-lang/capability-http-fetch", :capability/id "http/fetch", :capability/effects #{:network-read}, :capability/provider-status :contract-only})
