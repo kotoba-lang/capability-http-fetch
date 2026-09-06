@@ -7,8 +7,8 @@ Atomic authority package for `http/fetch`.
 - default policy: `:autonomous`
 - semantic definition CID: `bafyreigwzveiuxfkyk7tgf2eu7suzkhyj4532gyvpc7hcsa6adzcag55va`
 - hash contract CID: `bafkreiflhj3fslsbh7okdas2fzlhmogai64x6p3lkla6gtr7berbp7ftvi`
-- provider status: `contract-only` — **and the reason is not that nobody wrote
-  one**. See "Why this is still contract-only" below.
+- provider status: `contract-only` — **and the reason changed on 2026-09-06**.
+  See "Why this is still contract-only" below.
 
 The repository name is a discovery alias. The semantic definition CID is the
 immutable import identity. Importing it does not grant runtime authority:
@@ -94,28 +94,36 @@ meant to exercise.
 
 ## Why this is still `contract-only`
 
-Not for want of a provider. The authority
-(`kotoba-core-contracts/capability_repository.cljc`) says:
+Not for want of a provider, and **no longer because of the allowlist**. This
+section said the opposite earlier on 2026-09-06 and was overtaken the same day:
+ADR-2609062600 stage 3 changed `kotoba-core-contracts` so that
+`reference-implemented-allowlist` gates only the *unsigned* concession.
 
-```clojure
-(def reference-implemented-allowlist
-  "Pure / ambient-free capabilities permitted to ship reference providers
-  without production signing yet."
-  #{"math/sin" "math/cos" "hash/sha256" "data/cbor" "data/json"
-    "clock/monotonic" "random/bytes" "time/now-days"})
-```
+> The allowlist gates the UNSIGNED concession, not effectful capabilities as
+> such. Something that carries a real attestation has a publisher who can be
+> revoked, which is the property the allowlist was standing in for.
 
-`:signature :reference-unsigned` is a concession granted **because those
-capabilities cannot reach anything**. `http/fetch` is exactly what the
-allowlist excludes, and declaring `:reference-implemented` here is refused with
-`:reference-implemented-not-allowlisted` (measured 2026-09-06).
+So an attested `http/fetch` provider **can** be `:reference-implemented` today.
+`why-this-package-is-still-contract-only` measures that rather than asserting
+it, in three directions: `:reference-unsigned` is refused with
+`:reference-implemented-not-allowlisted`, an attestation over a *different*
+artifact is refused with `:attestation-does-not-bind-this-artifact`, and an
+envelope binding **this** artifact leaves **no** problem the pure authority can
+decide.
 
-**So the gate on the network effect is not the implementation — it is the
-signing ceremony.** The order is: a real signing pipeline → an authority
-decision to admit an effectful capability → the status change here. The
-provider is the cheap part and it is now written, and the manifest keeps
-`:contract-only` with no `:path` and no `:sha256`, which is what the contract
-requires of that status.
+The old paragraph was prose, so nothing failed when it stopped being true. That
+is why the reason is now a test.
+
+Two things remain, and neither is code:
+
+1. **`amu sign-output-set` signs an amu output set**, binding
+   `:output-set-sha256` and `:provenance-sha256`. This core is a hand-written
+   `.wat` compiled by `wasm-tools` and is not one.
+2. **No signing key is designated for capability publication.** Which key may
+   publish a capability is an owner decision (ADR-2609062600).
+
+The manifest therefore keeps `:contract-only`, with no `:path` and no
+`:sha256`, which is what the contract requires of that status.
 
 ## Build the core
 
