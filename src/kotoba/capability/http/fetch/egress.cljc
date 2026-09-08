@@ -32,7 +32,7 @@
 
   Collapsing them into `denied` would leave the caller with one word for four
   situations, three of which are fixed by editing different things."
-  (:require [clojure.string :as str]))
+  (:require [kotoba.lang.text :as str]))
 
 (def schema "kotoba.capability.http.fetch.egress.v1")
 
@@ -50,7 +50,7 @@
   (try
     (let [m (re-find #"^([a-zA-Z][a-zA-Z0-9+.-]*)://([^/?#]+)" (str url))]
       (when m
-        (let [scheme (str/lower-case (nth m 1))
+        (let [scheme (str/lower (nth m 1))
               authority (nth m 2)
               ;; strip userinfo before the host: `https://evil@allowed.example`
               ;; has authority `evil@allowed.example` and host `allowed.example`,
@@ -63,7 +63,7 @@
                      ;; IPv6 literal
                      (subs hostport 0 (inc (or (str/index-of hostport "]") 0)))
                      (first (str/split hostport #":")))]
-          {:scheme scheme :host (str/lower-case (str host))})))
+          {:scheme scheme :host (str/lower (str host))})))
     (catch #?(:clj Exception :cljs :default) _ nil)))
 
 (defn admit
@@ -75,7 +75,7 @@
   ([policy url method]
    (let [allow (:allow policy)
          schemes (or (:schemes policy) #{"https"})
-         m (str/upper-case (str (or method "GET")))
+         m (str/upper (str (or method "GET")))
          parsed (host-of url)]
      (cond
        (empty? allow)
