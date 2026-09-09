@@ -1,6 +1,13 @@
-{:path
-        ;; kotoba.lang.text, not clojure.string. Pinned as an explicit floor:
+{:paths ["src"]
+ :deps {;; kotoba.lang.text, not clojure.string. Pinned as an explicit floor:
         ;; tools.deps takes the NEWEST sha it is shown, so without a floor here
         ;; this repo silently rides whatever a sibling happens to name.
         io.github.kotoba-lang/text {:git/sha "73bdb13ae7a3d004b44bca08be03a3191157a38f"}
-       s ["src"], :deps #:io.github.kotoba-lang{kotoba-core-contracts #:git{:url "https://github.com/kotoba-lang/kotoba-core-contracts.git", :sha "2b6996463acfd215bcefc8f8aa90c4f10133aea4"}}, :aliases {:test {:extra-paths ["test"], :extra-deps #:io.github.cognitect-labs{test-runner #:git{:tag "v0.5.1", :sha "dfb30dd"}}, :main-opts ["-m" "cognitect.test-runner"]}}}
+        io.github.kotoba-lang/kotoba-core-contracts
+        {:git/url "https://github.com/kotoba-lang/kotoba-core-contracts.git"
+         :git/sha "2b6996463acfd215bcefc8f8aa90c4f10133aea4"}}
+ :aliases
+ {:test {:extra-paths ["test"]
+         :extra-deps {io.github.cognitect-labs/test-runner
+                      {:git/tag "v0.5.1" :git/sha "dfb30dd"}}
+         :main-opts ["-m" "cognitect.test-runner"]}}}
