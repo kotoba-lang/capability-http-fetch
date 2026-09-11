@@ -135,7 +135,7 @@ shasum -a 256 artifacts/provider.core.wasm
 ## Test
 
 ```sh
-clojure -M:test
+kbb -M:test
 ```
 
 19 tests / 51 assertions, no socket opened by any of them.
