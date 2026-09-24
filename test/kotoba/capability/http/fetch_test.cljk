@@ -1,5 +1,5 @@
 (ns kotoba.capability.http.fetch-test
-  (:require [kotoba.test :refer [deftest is testing]]
+  (:require [kotoba.io :as kio] [kotoba.test :refer [deftest is testing]]
             [kotoba.capability.http.fetch :as capability]
             [kotoba.core.capability-repository :as repository]
             [kotoba.core.contracts :as contracts]))
@@ -11,8 +11,8 @@
 
 (def ^:private artifact-sha256
   "sha256 of `artifacts/provider.core.wasm`, re-derived rather than quoted."
-  (let [f (java.io.File. "artifacts/provider.core.wasm")
-        bs (byte-array (.length f))
+  (let [f (kio/file "artifacts/provider.core.wasm")
+        bs (byte-array (kio/length f))
         _ (with-open [in (java.io.FileInputStream. f)] (.read in bs))
         md (java.security.MessageDigest/getInstance "SHA-256")]
     (apply str (map #(format "%02x" %) (.digest md bs)))))
