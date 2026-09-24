@@ -5,7 +5,7 @@
   asserted only `(not allowed?)` would count a refusal for any cause as the one
   it meant to exercise — ADR-2608136000 §6. Each assertion below names the
   reason, so a change that starts refusing for a different cause fails here."
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [kotoba.capability.http.fetch.egress :as e]))
 
 (def ^:private p {:allow #{"api.murakumo.cloud" "agent.itonami.cloud"}})

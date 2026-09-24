@@ -1,5 +1,5 @@
 (ns kotoba.capability.http.fetch-test
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [kotoba.capability.http.fetch :as capability]
             [kotoba.core.capability-repository :as repository]
             [kotoba.core.contracts :as contracts]))
