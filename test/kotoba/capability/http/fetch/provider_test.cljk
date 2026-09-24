@@ -5,7 +5,7 @@
   refused before one could be opened, which is the part of this capability that
   is the capability."
   (:require [clojure.java.io :as io]
-            [clojure.test :refer [deftest is testing]]
+            [kotoba.test :refer [deftest is testing]]
             [kotoba.capability.http.fetch.provider :as provider]))
 
 (deftest the-three-negative-codes-are-distinct
