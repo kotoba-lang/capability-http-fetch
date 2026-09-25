@@ -4,7 +4,7 @@
   Nothing here opens a socket. Every assertion is about a request that was
   refused before one could be opened, which is the part of this capability that
   is the capability."
-  (:require [clojure.java.io :as io]
+  (:require [kotoba.io :as io]
             [kotoba.test :refer [deftest is testing]]
             [kotoba.capability.http.fetch.provider :as provider]))
 
@@ -61,13 +61,13 @@
   ;; forgets to bind a host implementation must get "no provider", never a
   ;; zero-length body that reads as a successful empty response.
   (let [f (io/file "artifacts/provider.core.wasm")]
-    (is (.exists f) "the core artifact is not built; run the command in README")
-    (is (pos? (.length f)))
+    (is (io/exists? f) "the core artifact is not built; run the command in README")
+    (is (pos? (io/length f)))
     ;; -3 as a signed LEB128 immediate of i32.const is 0x7d. Asserting the byte
     ;; is cruder than running the module and more honest than asserting nothing:
     ;; this file has no wasm runtime, and a test that claimed to check the
     ;; behaviour without one would be claiming more than it did.
-    (let [bs (byte-array (.length f))]
+    (let [bs (byte-array (io/length f))]
       (with-open [in (io/input-stream f)] (.read in bs))
       (is (some #(= (unchecked-byte 0x7d) %) (seq bs))
           "the core does not contain the -3 constant it is supposed to return"))))
